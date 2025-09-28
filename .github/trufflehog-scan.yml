@@ -1,0 +1,22 @@
+name: TruffleHog Scan Test
+
+on:
+ pull_request:
+   branches:
+     - main
+
+jobs:
+ trufflehog:
+   runs-on: ubuntu-latest
+
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up trufflehog
+      run: |
+        docker pull trufflesecurity/trufflehog:latest
+      
+    - name: Run trufflehog
+      run: |
+        docker run --rm -it -v "$(pwd)":/pwd trufflesecurity/trufflehog:latest github --repo https://github.com/fout4/3361-Curso-4-AppSec --exclude-paths=/pwd/trufflehog-exclude-path.txt
