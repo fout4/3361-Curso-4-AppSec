@@ -19,4 +19,4 @@ jobs:
       
     - name: Run trufflehog
       run: |
-        docker run --rm -it -v "$(pwd)":/pwd trufflesecurity/trufflehog:latest github --repo https://github.com/fout4/3361-Curso-4-AppSec --exclude-paths=/pwd/trufflehog-exclude-path.txt
+        docker run --rm -v "$(pwd)":/pwd trufflesecurity/trufflehog:latest github --repo https://github.com/fout4/3361-Curso-4-AppSec --exclude-paths=/pwd/trufflehog-exclude-path.txt
