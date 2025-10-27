@@ -24,7 +24,7 @@ jobs:
         --since-commit=${{ github.event.pull_request.base.sha }}
         --branch=${{ github.event.pull_request.head.sha }}
         --only-verified
-        --fail
+        --fail)
         echo "::set-output name=trufflehog_output::$(echo "$output" | tr -d '\r')"
 
     - name: Create issue
