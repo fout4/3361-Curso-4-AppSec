@@ -20,12 +20,7 @@ jobs:
     - name: Run trufflehog
       id: trufflehog
       run: |
-        output=$(docker run --rm -v "$(pwd)":/pwd trufflesecurity/trufflehog:latest github --repo https://github.com/fout4/3361-Curso-4-AppSec \
-        --since ${{ github.event.pull_request.base.sha }} \
-        --branch=${{ github.event.pull_request.head.sha }} \
-        --only-verified \
-        --fail)
-
+        output=$(docker run --name trufflehog --rm -v "$(pwd):/workdir" trufflesecurity/trufflehog:latest git file:///workdir --since-commit ${{ github.event.pull_request.base.sha }})
         echo "::set-output name=trufflehog_output::$(echo "$output" | tr -d '\r')"
 
     - name: Create issue
