@@ -36,7 +36,7 @@ jobs:
           printf 'trufflehog_raw_result<<EOF\n%s\nEOF\n' "$raw_result"
           } >> "$GITHUB_OUTPUT"
         else
-          echo "✅ No secrets found."
+          echo "No secrets found."
           echo "found_secret=false" >> "$GITHUB_OUTPUT"
         fi
 
@@ -47,25 +47,23 @@ jobs:
       run: |
         echo "$trufflehog_output"
         commit="${{ steps.trufflehog.outputs.trufflehog_commit }}"
-          file="${{ steps.trufflehog.outputs.trufflehog_file }}"
-          raw_result="${{ steps.trufflehog.outputs.trufflehog_raw_result }}"
+        file="${{ steps.trufflehog.outputs.trufflehog_file }}"
+        raw_result="${{ steps.trufflehog.outputs.trufflehog_raw_result }}"
 
-          issue_body="**TruffleHog detected a potential secret** 🐷🔑  
-          **Commit:** $commit  
-          **File:** $file  
-          **Raw result:**  
-          \`\`\`
-          $raw_result
-          \`\`\`"
+        issue_body="**TruffleHog detected a potential secret** 🐷🔑  
+        **Commit:** $commit  
+        **File:** $file  
+        **Raw result:**  
+        \`\`\`
+        $raw_result
+        \`\`\`"
 
-          curl -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/fout4/3361-Curso-4-AppSec/issues \
-            -d "{\"title\":\"TruffleHog found a secret\",\"body\":\"$issue_body\",\"labels\":[\"bug\"]}" \
-          exit 1
-        fi
+        curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $GH_TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/fout4/3361-Curso-4-AppSec/issues \
+          -d "{\"title\":\"TruffleHog found a secret\",\"body\":\"$issue_body\",\"labels\":[\"bug\"]}" \
       env:
         trufflehog_output: ${{ steps.trufflehog.outputs.trufflehog_output }}    
