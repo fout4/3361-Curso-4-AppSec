@@ -22,7 +22,7 @@ jobs:
     - name: Run trufflehog
       id: trufflehog
       run: |
-        output=$(docker run --name trufflehog -v "$(pwd):/workdir" trufflesecurity/trufflehog:latest git file:///workdir --since-commit ${{ github.event.pull_request.base.sha }})
+        output=$(docker run --name trufflehog -v "$(pwd):/workdir" trufflesecurity/trufflehog:latest github --repo https://github.com/${{ github.repository }} --exclude-paths=/pwd/trufflehog-exclude-path.txt)
         trufflehog_output=$(printf '%s' "$output" | tr -d '\r')
         if [[ "$trufflehog_output" == *"Found unverified result"* || "$trufflehog_output" == *"Found verified result"* ]]; then
           echo "Secret detected! Extracting details..."
