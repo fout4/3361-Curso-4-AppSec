@@ -29,8 +29,7 @@ jobs:
       run: |
         echo "$trufflehog_output"
         if [[ "$trufflehog_output" == *"Found unverified result"* || "$trufflehog_output" == *"Found verified result"* ]]; then
-          info=$(echo "$trufflehog_output" | grep -oP '(?<=Commit: ).*')
-          issue_body="Secrets encontradas pelo TruffleHog, com as seguintes informações:\n $info"
+          
           curl -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
